@@ -56,7 +56,8 @@
 
     shellAliases = {
       ll = "ls -l";
-      update = "sudo nixos-rebuild switch --flake ~/Documents/nix-config";
+      rebuild-switch = "sudo nixos-rebuild switch --flake ~/Documents/nix-config";
+      update = "nix flake update --flake ~/Documents/nix-config";
       f = "fuck";
     };
     history.size = 10000;
