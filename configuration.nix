@@ -34,6 +34,7 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
   services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
@@ -83,12 +84,25 @@
   environment.systemPackages = with pkgs; [
     git
     bitwarden-desktop
-    kdePackages.kate
     floorp
+    discord
     wget
     lshw
     thefuck
     tmux
+    megasync
+    obsidian
+    nixd
+    texlive.combined.scheme-full
+    imagemagick
+    ghostscript
+    kile
+    nixfmt-rfc-style
+    (vscode-with-extensions.override {
+    vscodeExtensions = with vscode-extensions; [
+      jnoortheen.nix-ide
+    ];
+  })
   ];
 
   system.stateVersion = "25.05"; # Did you read the comment?

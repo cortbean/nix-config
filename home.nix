@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # TODO please change the username & home directory to your own
@@ -6,7 +6,7 @@
   home.homeDirectory = "/home/cortbean";
 
   # Enables bitwarden SSH Agent
-  home.sessionVariables.SSH_AUTH_SOCK = "/home/cortbean/.bitwarden-ssh-agent.sock";
+  home.sessionVariables.SSH_AUTH_SOCK = lib.mkDefault "$HOME/.bitwarden-ssh-agent.sock";
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [

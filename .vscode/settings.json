@@ -1,0 +1,23 @@
+{
+  "nix.enableLanguageServer": true,
+  "nix.formatterPath": "nixfmt",
+  "nix.serverPath": "nixd",
+  "nix.serverSettings": {
+    "nixd": {
+      "formatting": {
+        "command": ["nixfmt"]
+      },
+      "options": {
+        "nixos": {
+          "expr": "(builtins.getFlake \"${workspaceFolder}\").nixosConfigurations.nixos.options"
+        },
+       "home-manager": {
+          "expr": "(builtins.getFlake \"${workspaceFolder}\").homeConfigurations.cortbean.options"
+        }
+      },
+      "diagnostic": {
+        "suppress": ["sema-unknown-attr"]
+      }
+    }
+  }
+}
