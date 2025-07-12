@@ -60,12 +60,27 @@
     jack.enable = true;
   };
 
+  systemd.tmpfiles.rules = [
+    # Create /opt/nix-config with group sticky bit (so new files inherit group)
+    "d /opt/nix-config/ 2770 cortbean nixshared -"
+    "Z /opt/nix-config/ 2770 cortbean nixshared"
+  ];
+
+  users.groups.nixshared.members = ["cortbean" "work"];
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.cortbean = {
     isNormalUser = true;
     description = "cortbean";
     shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" ];
+  };
+
+  users.users.work = {
+    isNormalUser = true;
+    description = "work";
+    shell = pkgs.zsh;
+    extraGroups = [ "networkmanager" ];
   };
 
   # Enable the Flakes feature and the accompanying new nix command-line tool
@@ -80,7 +95,7 @@
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     git
-    floorp
+    firefox
     wget
     lshw
     nh
@@ -99,7 +114,7 @@
     enable = true;
     clean.enable = true;
     clean.extraArgs = "--keep-since 7d --keep 5";
-    flake = "/home/cortbean/Documents/nix-config";
+    flake = "/opt/nix-config";
   };
 
   system.stateVersion = "25.05"; # Did you read the comment?

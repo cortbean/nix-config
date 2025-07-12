@@ -15,6 +15,7 @@
     kile
     discord
     bitwarden-desktop
+    floorp
   ];
 
   programs.vscode = {
