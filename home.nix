@@ -10,7 +10,20 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
+    megasync
+    obsidian
+    kile
+    discord
+    bitwarden-desktop
   ];
+
+  programs.vscode = {
+  enable = true;
+  package = pkgs.vscodium;
+  profiles.default.extensions = with pkgs.vscode-extensions; [
+    jnoortheen.nix-ide
+    ];
+  };
 
   # basic configuration of git, please change to your own
   programs.git = {
@@ -55,9 +68,6 @@
     };
 
     shellAliases = {
-      ll = "ls -l";
-      rebuild-switch = "sudo nixos-rebuild switch --flake ~/Documents/nix-config";
-      update = "nix flake update --flake ~/Documents/nix-config";
       f = "fuck";
     };
     history.size = 10000;
@@ -67,13 +77,5 @@
     '';
   };
 
-  # This value determines the home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new home Manager release introduces backwards
-  # incompatible changes.
-  #
-  # You can update home Manager without changing this value. See
-  # the home Manager release notes for a list of state version
-  # changes in each release.
   home.stateVersion = "25.05";
 }

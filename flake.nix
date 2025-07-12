@@ -27,7 +27,6 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "backup";
-
           home-manager.users.cortbean = import ./home.nix;
         }
       ];
@@ -35,13 +34,15 @@
 
     homeConfigurations = {
       cortbean = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs { system = "x86_64-linux"; };
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config = {
+            allowUnfree = true;
+          };
+        };
         modules = [
           ./home.nix
         ];
-        extraSpecialArgs = {
-          lib = nixpkgs.lib;
-        };
       };
     };
   };

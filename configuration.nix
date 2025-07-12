@@ -57,8 +57,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    jack.enable = true;
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -67,8 +66,6 @@
     description = "cortbean";
     shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    ];
   };
 
   # Enable the Flakes feature and the accompanying new nix command-line tool
@@ -83,28 +80,27 @@
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     git
-    bitwarden-desktop
     floorp
-    discord
     wget
     lshw
+    nh
+    zsh
     thefuck
     tmux
-    megasync
-    obsidian
     nixd
-    texlive.combined.scheme-full
+    nixfmt-rfc-style
     imagemagick
     ghostscript
-    kile
-    nixfmt-rfc-style
-    (vscode-with-extensions.override {
-    vscodeExtensions = with vscode-extensions; [
-      jnoortheen.nix-ide
-    ];
-  })
+    texlive.combined.scheme-full
   ];
 
-  system.stateVersion = "25.05"; # Did you read the comment?
+  #Configuing NH
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 7d --keep 5";
+    flake = "/home/cortbean/Documents/nix-config";
+  };
 
+  system.stateVersion = "25.05"; # Did you read the comment?
 }
