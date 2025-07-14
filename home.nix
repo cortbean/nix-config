@@ -6,17 +6,19 @@
   home.homeDirectory = "/home/cortbean";
 
   # Enables bitwarden SSH Agent
-  home.sessionVariables.SSH_AUTH_SOCK = lib.mkDefault "$HOME/.bitwarden-ssh-agent.sock";
+  home.sessionVariables = {
+    SSH_AUTH_SOCK = "$HOME/.bitwarden-ssh-agent.sock";
+  };
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
+    floorp
     megasync
     obsidian
-    kile
     discord
     bitwarden-desktop
   ];
-
+  
   programs.vscode = {
   enable = true;
   package = pkgs.vscodium;

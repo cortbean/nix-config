@@ -4,6 +4,14 @@
 
 { config, pkgs, ... }:
 
+with pkgs; let
+  patchDesktop = pkg: appName: from: to: lib.hiPrio (
+    pkgs.runCommand "$patched-desktop-entry-for-${appName}" {} ''
+      ${coreutils}/bin/mkdir -p $out/share/applications
+      ${gnused}/bin/sed 's#${from}#${to}#g' < ${pkg}/share/applications/${appName}.desktop > $out/share/applications/${appName}.desktop
+      '');
+  GPUOffloadApp = pkg: desktopName: patchDesktop pkg desktopName "^Exec=" "Exec=nvidia-offload ";
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -65,7 +73,7 @@
     isNormalUser = true;
     description = "cortbean";
     shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "adbusers"];
   };
 
   # Enable the Flakes feature and the accompanying new nix command-line tool
@@ -73,14 +81,14 @@
 
   #Installing Zsh
   programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    home-manager
     git
-    floorp
+    ungoogled-chromium
     wget
     lshw
     nh
@@ -92,7 +100,36 @@
     imagemagick
     ghostscript
     texlive.combined.scheme-full
+    thunderbird
+    kdePackages.merkuro
+    kdePackages.kdepim-addons
+    kile
+    mangohud
+    protonup
+    heroic
+    bottles
+    prismlauncher
+    android-studio
+    (GPUOffloadApp prismlauncher "org.prismlauncher.PrismLauncher")
+    wl-clipboard
   ];
+
+  programs.adb.enable = true;
+
+  programs.kdeconnect.enable = true;
+  virtualisation.waydroid.enable = true;
+
+  environment.sessionVariables = {
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
+  };
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+    gamescopeSession.enable = true;
+  };
 
   #Configuing NH
   programs.nh = {
