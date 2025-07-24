@@ -21,6 +21,7 @@ in
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [ "preempt=voluntary" ];
 
   networking.hostName = "nixos"; # Define your hostname.
 
@@ -86,9 +87,12 @@ in
   nixpkgs.config.allowUnfree = true;
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    kdePackages.sddm-kcm
     home-manager
+    gparted
     git
     ungoogled-chromium
+    onlyoffice-desktopeditors
     wget
     lshw
     nh
@@ -106,8 +110,11 @@ in
     kile
     mangohud
     protonup
-    heroic
-    bottles
+    (bottles.override{removeWarningPopup = true;})
+    (GPUOffloadApp steam "steam")
+    wine
+    lutris
+    (GPUOffloadApp lutris "net.lutris.Lutris")
     prismlauncher
     android-studio
     (GPUOffloadApp prismlauncher "org.prismlauncher.PrismLauncher")
@@ -135,9 +142,21 @@ in
   programs.nh = {
     enable = true;
     clean.enable = true;
-    clean.extraArgs = "--keep-since 7d --keep 5";
+    clean.extraArgs = "--keep 5";
     flake = "/home/cortbean/Documents/nix-config";
   };
+
+  #Virtualisation
+  programs.virt-manager.enable = true;
+  users.groups.libvirtd.members = ["cortbean"];
+  virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
+
+  systemd.services.libvirtd.serviceConfig.Environment = [
+  "LIBGL_DRIVERS_PATH=/run/opengl-driver/lib/dri"
+  "LIBGL_ALWAYS_INDIRECT=1"
+];
+
 
   system.stateVersion = "25.05"; # Did you read the comment?
 }

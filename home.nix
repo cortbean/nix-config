@@ -12,11 +12,15 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    floorp
+    devtoolbox
+    firefox
+    kdePackages.filelight
     megasync
     obsidian
     discord
     bitwarden-desktop
+    onedrivegui
+    teams-for-linux
   ];
   
   programs.vscode = {
@@ -76,8 +80,10 @@
 
     initContent = ''
       eval "$(starship init zsh)"
+      source ~/.config/zsh/nix-functions.sh
     '';
   };
+  home.file.".config/zsh/nix-functions.sh".source = ./nix-functions.sh;
 
   home.stateVersion = "25.05";
 }
