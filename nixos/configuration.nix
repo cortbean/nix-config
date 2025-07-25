@@ -2,8 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-
+{
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 with pkgs; let
   patchDesktop = pkg: appName: from: to: lib.hiPrio (
     pkgs.runCommand "$patched-desktop-entry-for-${appName}" {} ''
@@ -15,6 +21,7 @@ in
 {
   imports =
     [ # Include the results of the hardware scan.
+      outputs.nixosModules.nvidia
       ./hardware-configuration.nix
     ];
 
