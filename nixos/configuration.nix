@@ -3,27 +3,23 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
-  inputs,
   outputs,
   lib,
-  config,
   pkgs,
   ...
 }:
-with pkgs; let
-  patchDesktop = pkg: appName: from: to: lib.hiPrio (
-    pkgs.runCommand "$patched-desktop-entry-for-${appName}" {} ''
-      ${coreutils}/bin/mkdir -p $out/share/applications
-      ${gnused}/bin/sed 's#${from}#${to}#g' < ${pkg}/share/applications/${appName}.desktop > $out/share/applications/${appName}.desktop
-      '');
-  GPUOffloadApp = pkg: desktopName: patchDesktop pkg desktopName "^Exec=" "Exec=nvidia-offload ";
-in
 {
   imports =
     [ # Include the results of the hardware scan.
-      outputs.nixosModules.nvidia
       ./hardware-configuration.nix
+
+      # Import Modules
+      outputs.nixosModules.nvidia
+      outputs.nixosModules.games
     ];
+
+  # Activate modules
+  my.gaming.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -115,16 +111,8 @@ in
     kdePackages.merkuro
     kdePackages.kdepim-addons
     kile
-    mangohud
-    protonup
     (bottles.override{removeWarningPopup = true;})
-    (GPUOffloadApp steam "steam")
-    wine
-    lutris
-    (GPUOffloadApp lutris "net.lutris.Lutris")
-    prismlauncher
     android-studio
-    (GPUOffloadApp prismlauncher "org.prismlauncher.PrismLauncher")
     wl-clipboard
   ];
 
@@ -132,18 +120,6 @@ in
 
   programs.kdeconnect.enable = true;
   virtualisation.waydroid.enable = true;
-
-  environment.sessionVariables = {
-    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
-  };
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-    gamescopeSession.enable = true;
-  };
 
   #Configuing NH
   programs.nh = {

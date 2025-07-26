@@ -18,6 +18,11 @@
     ...
   } @ inputs: let
     inherit (self) outputs;
+    system = "x86_64-linux";
+    pkgs = import nixpkgs { inherit system; };
+    lib = pkgs.lib.extend (_: _: {
+      gpuUtils = import ./lib/gpu-utils.nix { inherit lib pkgs; };
+    });
   in {
     nixosModules = import ./modules/nixos;
     homeManagerModules = import ./modules/home-manager;
@@ -25,8 +30,8 @@
     # NixOS configuration entrypoint
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs outputs;};
+        inherit system;
+        specialArgs = {inherit inputs outputs lib;};
         modules = [
           ./nixos/configuration.nix
 
@@ -45,7 +50,6 @@
     homeConfigurations = {
       "cortbean@nixos" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
-          system = "x86_64-linux";
           config = {
             allowUnfree = true;
           };
