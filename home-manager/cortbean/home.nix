@@ -6,18 +6,23 @@
   home.homeDirectory = "/home/cortbean";
 
   # Enables bitwarden SSH Agent
-  home.sessionVariables.SSH_AUTH_SOCK = lib.mkDefault "$HOME/.bitwarden-ssh-agent.sock";
+  home.sessionVariables = {
+    SSH_AUTH_SOCK = "$HOME/.bitwarden-ssh-agent.sock";
+  };
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
+    devtoolbox
+    firefox
+    kdePackages.filelight
     megasync
     obsidian
-    kile
     discord
     bitwarden-desktop
-    floorp
+    onedrivegui
+    teams-for-linux
   ];
-
+  
   programs.vscode = {
   enable = true;
   package = pkgs.vscodium;
@@ -75,8 +80,10 @@
 
     initContent = ''
       eval "$(starship init zsh)"
+      source ~/.config/zsh/nix-functions.sh
     '';
   };
+  home.file.".config/zsh/nix-functions.sh".source = ../../nix-functions.sh;
 
   home.stateVersion = "25.05";
 }

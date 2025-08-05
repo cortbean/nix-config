@@ -1,5 +1,5 @@
 {
-  description = "A very basic flake";
+  description = "My nix config";
 
   inputs = {
     # NixOS official package source
@@ -11,44 +11,56 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+  } @ inputs: let
+    inherit (self) outputs;
+    system = "x86_64-linux";
+    pkgs = import nixpkgs { inherit system; };
+    lib = pkgs.lib.extend (_: _: {
+      gpuUtils = import ./lib/gpu-utils.nix { inherit lib pkgs; };
+    });
+  in {
+    nixosModules = import ./modules/nixos;
+    homeManagerModules = import ./modules/home-manager;
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }: {
-    nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    # NixOS configuration entrypoint
+    nixosConfigurations = {
+      nixos = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {inherit inputs outputs lib;};
+        modules = [
+          ./nixos/configuration.nix
 
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./configuration.nix
-        ./hardware/nvidia.nix
-
-        # home-manager as NixOS module
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "backup";
-          home-manager.users = {
-            cortbean = import ./home-manager/cortbean/home.nix;
-            work = import ./home-manager/work/home.nix;
-          };
-        }
-      ];
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+            home-manager.users = {
+              cortbean = import ./home-manager/cortbean/home.nix;
+              work = import ./home-manager/work/home.nix;
+            };
+          }
+        ];
+      };
     };
 
+    # Standalone home-manager configuration entrypoint
     homeConfigurations = {
-      cortbean = home-manager.lib.homeManagerConfiguration {
+      "cortbean@nixos" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          config.allowUnfree = true;
+          config = {
+            allowUnfree = true;
+          };
         };
-        modules = [./home-manager/cortbean/home.nix];
-      };
-      work = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          config.allowUnfree = true;
-        };
-        modules = [ ./home-manager/work/home.nix ];
+        extraSpecialArgs = {inherit inputs outputs;};
+        modules = [
+          ./home-manager/home.nix
+        ];
       };
     };
   };

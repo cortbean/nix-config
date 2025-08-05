@@ -2,17 +2,29 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-
+{
+  outputs,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+
+      # Import Modules
+      outputs.nixosModules.nvidia
+      outputs.nixosModules.games
     ];
+
+  # Activate modules
+  my.gaming.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [ "preempt=voluntary" ];
 
   networking.hostName = "nixos"; # Define your hostname.
 
@@ -73,7 +85,7 @@
     isNormalUser = true;
     description = "cortbean";
     shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "adbusers"];
   };
 
   users.users.work = {
@@ -88,14 +100,20 @@
 
   #Installing Zsh
   programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    kdePackages.sddm-kcm
+    vlc
+    pavucontrol
+    qjackctl
+    home-manager
+    gparted
     git
-    firefox
+    ungoogled-chromium
+    onlyoffice-desktopeditors
     wget
     lshw
     nh
@@ -107,15 +125,39 @@
     imagemagick
     ghostscript
     texlive.combined.scheme-full
+    thunderbird
+    kdePackages.merkuro
+    kdePackages.kdepim-addons
+    kile
+    (bottles.override{removeWarningPopup = true;})
+    android-studio
+    wl-clipboard
   ];
+
+  programs.adb.enable = true;
+
+  programs.kdeconnect.enable = true;
+  virtualisation.waydroid.enable = true;
 
   #Configuing NH
   programs.nh = {
     enable = true;
     clean.enable = true;
-    clean.extraArgs = "--keep-since 7d --keep 5";
-    flake = "/opt/nix-config";
+    clean.extraArgs = "--keep 5";
+    flake = "/home/cortbean/Documents/nix-config";
   };
+
+  #Virtualisation
+  programs.virt-manager.enable = true;
+  users.groups.libvirtd.members = ["cortbean"];
+  virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
+
+  systemd.services.libvirtd.serviceConfig.Environment = [
+  "LIBGL_DRIVERS_PATH=/run/opengl-driver/lib/dri"
+  "LIBGL_ALWAYS_INDIRECT=1"
+];
+
 
   system.stateVersion = "25.05"; # Did you read the comment?
 }

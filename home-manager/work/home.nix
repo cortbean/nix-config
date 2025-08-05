@@ -11,5 +11,7 @@
   home.packages = with pkgs; [
     nodejs
     vscodium
+    teams-for-linux
+    firefox
   ];
 }
