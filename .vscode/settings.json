@@ -11,11 +11,14 @@
         "nixos": {
           "expr": "(builtins.getFlake \"${workspaceFolder}\").nixosConfigurations.nixos.options"
         },
-       "home-manager": {
+        "home-manager-cortbean": {
           "expr": "(builtins.getFlake \"${workspaceFolder}\").homeConfigurations.cortbean.options"
+        },
+        "home-manager-work": {
+          "expr": "(builtins.getFlake \"${workspaceFolder}\").homeConfigurations.work.options"
         }
       },
-      "diagnostic": {
+      "diagnostics": {
         "suppress": ["sema-unknown-attr"]
       }
     }

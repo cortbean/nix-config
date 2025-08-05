@@ -83,7 +83,7 @@
       source ~/.config/zsh/nix-functions.sh
     '';
   };
-  home.file.".config/zsh/nix-functions.sh".source = ../nix-functions.sh;
+  home.file.".config/zsh/nix-functions.sh".source = ../../nix-functions.sh;
 
   home.stateVersion = "25.05";
 }

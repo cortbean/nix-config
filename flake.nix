@@ -40,7 +40,10 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.users.cortbean = import ./home-manager/home.nix;
+            home-manager.users = {
+              cortbean = import ./home-manager/cortbean/home.nix;
+              work = import ./home-manager/work/home.nix;
+            };
           }
         ];
       };
