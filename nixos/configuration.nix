@@ -72,14 +72,6 @@
     jack.enable = true;
   };
 
-  systemd.tmpfiles.rules = [
-    # Create /opt/nix-config with group sticky bit (so new files inherit group)
-    "d /opt/nix-config/ 2770 cortbean nixshared -"
-    "Z /opt/nix-config/ 2770 cortbean nixshared"
-  ];
-
-  users.groups.nixshared.members = ["cortbean" "work"];
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.cortbean = {
     isNormalUser = true;
