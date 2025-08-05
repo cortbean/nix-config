@@ -91,6 +91,9 @@
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     kdePackages.sddm-kcm
+    vlc
+    pavucontrol
+    qjackctl
     home-manager
     gparted
     git

@@ -29,7 +29,7 @@ in {
     programs.gamemode.enable = true;
 
     # Fix some games requiring 32-bit OpenGL
-    hardware.opengl.driSupport32Bit = true;
+    hardware.graphics.enable32Bit = true;
 
     environment.sessionVariables = {
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
