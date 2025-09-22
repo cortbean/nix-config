@@ -1,11 +1,11 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
 {
   outputs,
   lib,
   pkgs,
+  winapps,
   ...
 }:
 {
@@ -27,6 +27,8 @@
   boot.kernelParams = [ "preempt=voluntary" ];
 
   networking.hostName = "nixos"; # Define your hostname.
+
+  services.fwupd.enable = true;
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -77,7 +79,7 @@
     isNormalUser = true;
     description = "cortbean";
     shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "wheel" "adbusers"];
+    extraGroups = [ "networkmanager" "wheel" "adbusers" "docker" ];
   };
 
   users.users.work = {
@@ -124,6 +126,8 @@
     (bottles.override{removeWarningPopup = true;})
     android-studio
     wl-clipboard
+    winapps.packages."${pkgs.system}".winapps
+    winapps.packages."${pkgs.system}".winapps-launcher # optional
   ];
 
   programs.adb.enable = true;
@@ -139,11 +143,15 @@
     flake = "/home/cortbean/Documents/nix-config";
   };
 
+  virtualisation.docker.enable = true;
+
   #Virtualisation
   programs.virt-manager.enable = true;
   users.groups.libvirtd.members = ["cortbean"];
+  users.groups.kvm.members = ["cortbean"];
   virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
+  virtualisation.libvirtd.qemu.ovmf.enable = true;
 
   systemd.services.libvirtd.serviceConfig.Environment = [
   "LIBGL_DRIVERS_PATH=/run/opengl-driver/lib/dri"

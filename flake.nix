@@ -10,10 +10,16 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    winapps = {
+      url = "github:winapps-org/winapps";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {
     self,
     nixpkgs,
+    winapps,
     home-manager,
     ...
   } @ inputs: let
@@ -31,10 +37,9 @@
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs outputs lib;};
+        specialArgs = {inherit inputs outputs lib winapps;};
         modules = [
-          ./nixos/configuration.nix
-
+          ./nixos/configuration.nix          
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

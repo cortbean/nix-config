@@ -8,7 +8,7 @@
 
   home.packages = with pkgs; [
     nodejs
-    vscodium
+    vscode
     teams-for-linux
     firefox
     pgadmin4
