@@ -5,7 +5,7 @@
   outputs,
   lib,
   pkgs,
-  winapps,
+  winboat,
   ...
 }:
 {
@@ -126,8 +126,9 @@
     (bottles.override{removeWarningPopup = true;})
     android-studio
     wl-clipboard
-    winapps.packages."${pkgs.system}".winapps
-    winapps.packages."${pkgs.system}".winapps-launcher # optional
+    winboat.packages."${pkgs.system}".winboat
+    freerdp
+    remmina
   ];
 
   programs.adb.enable = true;
@@ -157,7 +158,6 @@
   "LIBGL_DRIVERS_PATH=/run/opengl-driver/lib/dri"
   "LIBGL_ALWAYS_INDIRECT=1"
 ];
-
 
   system.stateVersion = "25.05"; # Did you read the comment?
 }

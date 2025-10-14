@@ -11,15 +11,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    winapps = {
-      url = "github:winapps-org/winapps";
+    winboat = {
+      url = "github:TibixDev/winboat";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs = {
     self,
     nixpkgs,
-    winapps,
+    winboat,
     home-manager,
     ...
   } @ inputs: let
@@ -37,7 +37,7 @@
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs outputs lib winapps;};
+        specialArgs = {inherit inputs outputs lib winboat;};
         modules = [
           ./nixos/configuration.nix          
           home-manager.nixosModules.home-manager

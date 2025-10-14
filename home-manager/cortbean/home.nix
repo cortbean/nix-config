@@ -17,6 +17,8 @@
     meld
     kdePackages.filelight
     megasync
+    godot
+    blender
     obsidian
     discord
     bitwarden-desktop
