@@ -45,6 +45,10 @@
       format = "ssh";
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMQG4wn1DRSWsrucUW3lO6ZTztjf+dej7Nnhn/fR1O7";
     };
+
+    extraConfig = {
+      push.autoSetupRemote = true;
+    };
   };
 
   #starship - an customizable prompt for any shell
