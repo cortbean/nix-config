@@ -5,7 +5,6 @@
   outputs,
   lib,
   pkgs,
-  winboat,
   ...
 }:
 {
@@ -126,7 +125,6 @@
     (bottles.override{removeWarningPopup = true;})
     android-studio
     wl-clipboard
-    winboat.packages."${pkgs.system}".winboat
     freerdp
     remmina
   ];

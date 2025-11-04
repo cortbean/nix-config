@@ -22,12 +22,7 @@ function nFull() {
     sudo nix-store --gc # Nettoyer les dérivations inutilisées (garbage collection)
     nh os boot # Pour enlever se qui se trouve dans le boot
 
-    echo "\nDo you want to list the generations? [y/N] "
-    read REPLY
-
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        sudo nix-env --list-generations --profile /nix/var/nix/profiles/system # Lister les builds
-    fi
+    sudo nix-env --list-generations --profile /nix/var/nix/profiles/system # Lister les builds
 }
 
 function nBuild() {
