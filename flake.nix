@@ -22,7 +22,7 @@
     inherit (self) outputs;
     system = "x86_64-linux";
     pkgs = import nixpkgs { inherit system; };
-    unstable-pkgs = import nix-unstable { inherit system; };
+    unstable = import nix-unstable { inherit system; };
     lib = pkgs.lib.extend (_: _: {
       gpuUtils = import ./lib/gpu-utils.nix { inherit lib pkgs; };
     });
@@ -34,7 +34,7 @@
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs outputs unstable-pkgs lib;};
+        specialArgs = {inherit inputs outputs unstable lib;};
         modules = [
           ./nixos/configuration.nix          
           home-manager.nixosModules.home-manager
@@ -42,10 +42,9 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = { inherit unstable-pkgs; };
+            home-manager.extraSpecialArgs = { inherit unstable; };
             home-manager.users = {
               cortbean = import ./home-manager/cortbean/home.nix;
-              work = import ./home-manager/work/home.nix;
             };
           }
         ];

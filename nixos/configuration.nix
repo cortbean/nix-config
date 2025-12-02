@@ -81,13 +81,6 @@
     extraGroups = [ "networkmanager" "wheel" "adbusers" "docker" ];
   };
 
-  users.users.work = {
-    isNormalUser = true;
-    description = "work";
-    shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" ];
-  };
-
   # Enable the Flakes feature and the accompanying new nix command-line tool
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -125,7 +118,6 @@
     (bottles.override{removeWarningPopup = true;})
     android-studio
     wl-clipboard
-    freerdp
     remmina
   ];
 

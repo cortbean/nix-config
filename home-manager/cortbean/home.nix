@@ -1,4 +1,4 @@
-{ config, pkgs, unstable-pkgs, lib, ... }:
+{ config, pkgs, unstable, lib, ... }:
 
 {
   # TODO please change the username & home directory to your own
@@ -12,7 +12,7 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    python3
+    python3Full
     devtoolbox
     firefox
     meld
@@ -25,7 +25,7 @@
     bitwarden-desktop
     onedrivegui
     teams-for-linux
-    unstable-pkgs.winboat
+    unstable.winboat
   ];
   
   programs.vscode = {
