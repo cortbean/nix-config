@@ -12,13 +12,13 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    python3Full
+    python3
     devtoolbox
     firefox
     meld
     kdePackages.filelight
     megasync
-    godot
+    godotPackages_4_4.godot
     blender
     obsidian
     discord
@@ -26,6 +26,8 @@
     onedrivegui
     teams-for-linux
     unstable.winboat
+    pay-respects
+    tldr
   ];
   
   programs.vscode = {
@@ -38,18 +40,17 @@
   # basic configuration of git, please change to your own
   programs.git = {
     enable = true;
-    userName = "cortbean";
-    userEmail = "medestjean@outlook.com";
     lfs.enable = true;
 
+    settings = {
+      push.autoSetupRemote = true;
+      user.name = "cortbean";
+      user.email = "medestjean@outlook.com";
+    };
     signing = {
       signByDefault = true;
       format = "ssh";
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMQG4wn1DRSWsrucUW3lO6ZTztjf+dej7Nnhn/fR1O7";
-    };
-
-    extraConfig = {
-      push.autoSetupRemote = true;
     };
   };
 
@@ -78,20 +79,18 @@
 
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "thefuck" ];
+      plugins = [ "git" "gitfast" ];
     };
 
-    shellAliases = {
-      f = "fuck";
-    };
     history.size = 10000;
 
     initContent = ''
       eval "$(starship init zsh)"
+      eval "$(pay-respects zsh)"
       source ~/.config/zsh/nix-functions.sh
     '';
   };
   home.file.".config/zsh/nix-functions.sh".source = ../../nix-functions.sh;
 
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 }

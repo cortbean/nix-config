@@ -14,7 +14,7 @@ in {
       (gpuUtils.GPUOffloadApp prismlauncher "org.prismlauncher.PrismLauncher")
       mangohud
       gamescope
-      protonup
+      protonup-ng
       wine
     ];
 

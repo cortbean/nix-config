@@ -25,6 +25,10 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelParams = [ "preempt=voluntary" ];
 
+  powerManagement.enable = true;
+  services.thermald.enable = true;
+  powerManagement.powertop.enable = true;
+
   networking.hostName = "nixos"; # Define your hostname.
 
   services.fwupd.enable = true;
@@ -104,7 +108,6 @@
     lshw
     nh
     zsh
-    thefuck
     tmux
     nixd
     nixfmt-rfc-style
@@ -142,12 +145,11 @@
   users.groups.kvm.members = ["cortbean"];
   virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
-  virtualisation.libvirtd.qemu.ovmf.enable = true;
 
   systemd.services.libvirtd.serviceConfig.Environment = [
   "LIBGL_DRIVERS_PATH=/run/opengl-driver/lib/dri"
   "LIBGL_ALWAYS_INDIRECT=1"
 ];
 
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
 }
