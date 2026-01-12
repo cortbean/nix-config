@@ -3,7 +3,7 @@
 function nFull() {
     echo "Full update nix"
 
-    nh os switch --update
+    sudo -v && nh os switch --update
     
     echo "\nDo you want to delete old generations (Keep 3)? [y/N] "
     read REPLY
@@ -20,7 +20,7 @@ function nFull() {
     fi
 
     sudo nix-store --gc # Nettoyer les dérivations inutilisées (garbage collection)
-    nh os boot # Pour enlever se qui se trouve dans le boot
+    sudo nh os boot # Pour enlever se qui se trouve dans le boot
 
     sudo nix-env --list-generations --profile /nix/var/nix/profiles/system # Lister les builds
 }
@@ -41,7 +41,7 @@ function nBuild() {
             TMPDIR=/tmp nh os build
             ;;
         3)
-            nh os switch
+            sudo nh os switch
             ;;
         *)
             echo "Invalid option"

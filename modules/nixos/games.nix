@@ -12,6 +12,8 @@ in {
       (gpuUtils.GPUOffloadApp lutris "net.lutris.Lutris")
       prismlauncher
       (gpuUtils.GPUOffloadApp prismlauncher "org.prismlauncher.PrismLauncher")
+      heroic
+      (gpuUtils.GPUOffloadApp heroic "com.heroicgameslauncher.hgl")
       mangohud
       gamescope
       protonup-ng
