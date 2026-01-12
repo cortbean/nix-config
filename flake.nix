@@ -5,6 +5,7 @@
     # NixOS official package source
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nix-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    hytale-launcher.url = "github:TNAZEP/HytaleLauncherFlake";
 
     # home-manager, used for managing user configuration
     home-manager = {
@@ -16,6 +17,7 @@
     self,
     nixpkgs,
     nix-unstable,
+    hytale-launcher,
     home-manager,
     ...
   } @ inputs: let

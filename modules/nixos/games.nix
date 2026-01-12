@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 
 let
   gpuUtils = lib.gpuUtils;
@@ -18,6 +18,7 @@ in {
       gamescope
       protonup-ng
       wine
+      inputs.hytale-launcher.packages.${pkgs.system}.default
     ];
 
     programs.steam = {
